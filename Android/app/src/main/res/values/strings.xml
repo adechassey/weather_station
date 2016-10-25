@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Weather Station</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="status">Status</string>
+    <string name="temperature">Temperature</string>
+    <string name="humidity">Humidity</string>
+    <string name="heatIndex">Heat index</string>
+</resources>
