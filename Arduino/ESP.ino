@@ -33,7 +33,7 @@ const String mqtt_topic_syntax = "home/";           // The first part of the MQT
 const char* mqtt_topic = "";
 const char* mqtt_topic_log = "home/log";            // Used to log the hardware status to broker
 char* mqtt_payload;
-boolean retained = true;
+const boolean retained = true;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
