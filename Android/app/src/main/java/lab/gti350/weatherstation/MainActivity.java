@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
         //Todo : .check why client.subscribe was throwing NullPointerException  even on doing subToken.waitForCompletion()  for Async                  connection estabishment. and why it worked on subscribing from within client.connect’s onSuccess(). SO
         String clientId = MqttClient.generateClientId();
         final MqttAndroidClient client =
-                new MqttAndroidClient(this.getApplicationContext(), "tcp://antoinedechassey.fr:1883",
+                new MqttAndroidClient(this.getApplicationContext(), "tcp://<IP>:1883",
                         clientId);
 
 
