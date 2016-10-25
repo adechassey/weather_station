@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Weather Station</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="section_format">Bienvenue, voici la météo de la coloc live : %1$d</string>
     <string name="status">Status</string>
     <string name="temperature">Temperature</string>
     <string name="humidity">Humidity</string>

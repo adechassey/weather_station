@@ -77,36 +77,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
             }
         });
 
-      /*  // MQTT
-        String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), "tcp://antoinedechassey.fr:1883", clientId);
-
-        try{
-            final IMqttToken token = client.connect();
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    // We are connected
-                    status = (TextView) findViewById(R.id.status);
-                    status.setText("Connected");
-
-                    try {
-                        client.subscribe("home/weather", 0);
-                    } catch (MqttException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    // We could not connect
-                    status = (TextView) findViewById(R.id.status);
-                    status.setText("Disconnected");
-                }
-            });
-        } catch (MqttException e){
-            e.printStackTrace();
-        }*/
+        // MQTT
 
         //MQTTConnect options : setting version to MQTT 3.1.1
         MqttConnectOptions options = new MqttConnectOptions();
@@ -120,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
         //Todo : .check why client.subscribe was throwing NullPointerException  even on doing subToken.waitForCompletion()  for Async                  connection estabishment. and why it worked on subscribing from within client.connect’s onSuccess(). SO
         String clientId = MqttClient.generateClientId();
         final MqttAndroidClient client =
-                new MqttAndroidClient(this.getApplicationContext(), "tcp://<IP>:1883",
+                new MqttAndroidClient(this.getApplicationContext(), "tcp://antoinedechassey.fr:1883",
                         clientId);
 
 
@@ -132,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
                     // We are connected
                     Log.d(TAG, "onSuccess");
                     Toast.makeText(MainActivity.this, "Connection successful", Toast.LENGTH_SHORT).show();
-                    //Subscribing to a topic door/status on broker.hivemq.com
+                    //Subscribing to a topic
                     client.setCallback(MainActivity.this);
                     final String topic = "home/#";
                     int qos = 1;
@@ -213,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements MqttCallback{
             status = (TextView) findViewById(R.id.status);
             status.setText(jsonData.get("status").toString());
         }
-        Toast.makeText(MainActivity.this, "Topic: "+topic+"\nMessage: "+message, Toast.LENGTH_LONG).show();
+        //Toast.makeText(MainActivity.this, "Topic: "+topic+"\nMessage: "+message, Toast.LENGTH_LONG).show();
     }
 
     @Override
