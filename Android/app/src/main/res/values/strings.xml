@@ -6,4 +6,5 @@
     <string name="temperature">Temperature</string>
     <string name="humidity">Humidity</string>
     <string name="heatIndex">Heat index</string>
+    <string name="image">Image</string>
 </resources>

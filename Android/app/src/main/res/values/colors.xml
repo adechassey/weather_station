@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorSuccess">#3fca3d</color>
     <color name="colorDanger">#ec1c23</color>
+    <color name="colorCold">#43a4e9</color>
+    <color name="colorVeryCold">#2fc1fa</color>
+    <color name="colorWarm">#ffca37</color>
 </resources>

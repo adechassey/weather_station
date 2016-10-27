@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,58 +42,84 @@
                 android:textAlignment="center"
                 android:textSize="30sp" />
 
-            <TextView
-                android:text="Temperature :"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/labelTemperature"
-                tools:ignore="HardcodedText"
-                android:layout_margin="5dp"
-                android:textSize="30sp"
-                android:textStyle="normal|bold" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:weightSum="1">
 
-            <TextView
-                android:text="@string/temperature"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/temperature"
-                android:layout_margin="5dp"
-                android:textSize="30sp"
-                android:textAlignment="center" />
+                <ImageView
+                    android:layout_gravity="center"
+                    app:srcCompat="@mipmap/ic_launcher"
+                    android:id="@+id/imageView"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:contentDescription="@string/image"
+                    android:src="@mipmap/ic_launcher"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="10dp" />
 
-            <TextView
-                android:text="Humidité :"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/labelHumidity"
-                android:textSize="30sp"
-                android:textStyle="normal|bold"
-                tools:ignore="HardcodedText" />
+                <TextView
+                    android:text="Temperature :"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/labelTemperature"
+                    tools:ignore="HardcodedText"
+                    android:layout_margin="5dp"
+                    android:textSize="30sp"
+                    android:textStyle="normal|bold"
+                    android:textAllCaps="false" />
 
-            <TextView
-                android:text="@string/humidity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/humidity"
-                android:textSize="30sp"
-                android:textAlignment="center" />
+                <TextView
+                    android:text="@string/temperature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/temperature"
+                    android:layout_margin="5dp"
+                    android:textSize="30sp"
+                    android:textAlignment="center" />
 
-            <TextView
-                android:text="Ressenti :"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/labelHeatIndex"
-                android:textSize="30sp"
-                android:textStyle="normal|bold"
-                tools:ignore="HardcodedText" />
+                <TextView
+                    android:text="Humidité :"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/labelHumidity"
+                    android:textSize="30sp"
+                    android:textStyle="normal|bold"
+                    tools:ignore="HardcodedText"
+                    android:textAllCaps="false" />
 
-            <TextView
-                android:text="@string/heatIndex"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/heatIndex"
-                android:textSize="30sp"
-                android:textAlignment="center" />
+                <TextView
+                    android:text="@string/humidity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/humidity"
+                    android:textSize="30sp"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:text="Ressenti :"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/labelHeatIndex"
+                    android:textSize="30sp"
+                    android:textStyle="normal|bold"
+                    tools:ignore="HardcodedText"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:text="@string/heatIndex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/heatIndex"
+                    android:textSize="30sp"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </FrameLayout>

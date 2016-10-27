@@ -1,5 +1,6 @@
 package lab.gti350.weatherstation;
 
+import android.content.Intent;
 import android.media.Ringtone;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -46,14 +47,6 @@ public class MainActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-    private MqttAndroidClient client;
-    private TextView status;
-    private TextView temperature;
-    private TextView humidity;
-    private TextView heatIndex;
-    private Vibrator vibrator;
-    private Ringtone ringtone;
-
     private String mqtt_payload;
     private String mqtt_topic;
 
@@ -77,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         ringtone = RingtoneManager.getRingtone(this.getApplicationContext(), uri);*/
 
-        do_mqtt();
+        startService(new Intent(this, MQTTService.class));
     }
 
 
@@ -173,135 +166,6 @@ public class MainActivity extends AppCompatActivity {
                     return "SECTION 3";
             }
             return null;
-        }
-    }
-
-    private void do_mqtt() {
-        // MQTT
-        //MQTTConnect options : setting version to MQTT 3.1.1
-        MqttConnectOptions options = new MqttConnectOptions();
-        options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
-        /*options.setUserName("");
-        options.setPassword("".toCharArray());*/
-
-        //Below code binds MainActivity to Paho Android Service via provided MqttAndroidClient
-        // client interface
-        //Todo : Check why it wasn't connecting to test.mosquitto.org. Isn't that a public broker.
-        //Todo : .check why client.subscribe was throwing NullPointerException  even on doing subToken.waitForCompletion()  for Async                  connection estabishment. and why it worked on subscribing from within client.connect’s onSuccess(). SO
-        String clientId = MqttClient.generateClientId();
-        final MqttAndroidClient client =
-                new MqttAndroidClient(this.getApplicationContext(), "tcp://<IP>:1883",
-                        clientId);
-
-
-        try {
-            IMqttToken token = client.connect(options);
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    // We are connected
-                    Log.d(TAG, "onSuccess");
-                    Toast.makeText(MainActivity.this, "Connection successful", Toast.LENGTH_SHORT).show();
-                    //Subscribing to a topic
-                    client.setCallback(new MqttEventCallback());
-                    final String topic = "home/#";
-                    int qos = 1;
-                    try {
-                        IMqttToken subToken = client.subscribe(topic, qos);
-                        subToken.setActionCallback(new IMqttActionListener() {
-                            @Override
-                            public void onSuccess(IMqttToken asyncActionToken) {
-                                // successfully subscribed
-                                Toast.makeText(MainActivity.this, "Successfully subscribed to: " + topic, Toast.LENGTH_SHORT).show();
-
-                            }
-
-                            @Override
-                            public void onFailure(IMqttToken asyncActionToken,
-                                                  Throwable exception) {
-                                // The subscription could not be performed, maybe the user was not
-                                // authorized to subscribe on the specified topic e.g. using wildcards
-                                Toast.makeText(MainActivity.this, "Couldn't subscribe to: " + topic, Toast.LENGTH_SHORT).show();
-
-                            }
-                        });
-                    } catch (MqttException e) {
-                        e.printStackTrace();
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    // Something went wrong e.g. connection timeout or firewall problems
-                    Log.d(TAG, "onFailure");
-                    Toast.makeText(MainActivity.this, "Connection failed", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-        } catch (
-                MqttException e
-                )
-
-        {
-            e.printStackTrace();
-        }
-    }
-
-
-    private class MqttEventCallback implements MqttCallback {
-
-        @Override
-        public void connectionLost(Throwable cause) {
-
-        }
-
-        @Override
-        public void messageArrived(String topic, MqttMessage message) throws Exception {
-
-        /*
-        * To test ,publish  "open"/"close" at topic you subscibed app to in above .
-        *
-        ImageView doorImage = (ImageView)findViewById(R.id.door_image);
-        Log.d("door",message.toString());
-        if(message.toString().equals("close")){
-            doorImage.setImageResource(R.drawable.closed_door);
-        }
-        else {
-            doorImage.setImageResource(R.drawable.open_door);
-        }
-        */
-            JSONObject jsonData = new JSONObject(message.toString());
-
-            if (topic.equals("home/weather")) {
-                temperature = (TextView) findViewById(R.id.temperature);
-                humidity = (TextView) findViewById(R.id.humidity);
-                heatIndex = (TextView) findViewById(R.id.heatIndex);
-
-                temperature.setText(jsonData.get("temperature").toString() + " °C");
-                humidity.setText(jsonData.get("humidity").toString() + " %");
-                heatIndex.setText(jsonData.get("heatIndex").toString() + " °C");
-            }
-            if (topic.equals("home/log")) {
-                status = (TextView) findViewById(R.id.status);
-                status.setText(jsonData.get("status").toString());
-                if (jsonData.get("status").toString().equals("connected")) {
-                    status.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorSuccess));
-                }
-                if (jsonData.get("status").toString().equals("disconnected")) {
-                    status.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorDanger));
-                }
-            }
-            //Toast.makeText(MainActivity.this, "Topic: "+topic+"\nMessage: "+message, Toast.LENGTH_LONG).show();
-
-            //vibrator.vibrate(500);
-            //ringtone.play();
-        }
-
-        @Override
-        public void deliveryComplete(IMqttDeliveryToken token) {
-
         }
     }
 }
