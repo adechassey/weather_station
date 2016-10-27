@@ -122,7 +122,7 @@ public class MQTTService extends Service {
         MqttConnectOptions options = new MqttConnectOptions();
         options.setCleanSession(true);
         try {
-            mqttClient = new MqttAsyncClient("tcp://<IP>:1883", deviceId, new MemoryPersistence());
+            mqttClient = new MqttAsyncClient("tcp://antoinedechassey.fr:1883", deviceId, new MemoryPersistence());
             token = mqttClient.connect();
             token.waitForCompletion(3500);
             mqttClient.setCallback(new MqttEventCallback());
