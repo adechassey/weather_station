@@ -9,15 +9,19 @@
 #include <WiFiManager.h>          // https://github.com/tzapu/WiFiManager WiFi Configuration Magic
 #include <DHT.h>                  // DHT 11 library
 
-//#define SLEEP_DELAY_IN_SECONDS   30
+// ESP deep sleep
+//#define SLEEP_DELAY_IN_SECONDS     10
+// DHT
 #define DHTTYPE                    DHT11
 
 // Variables
+float vcc;                             // Battery level
+ADC_MODE(ADC_VCC);
 float t, h, heatIndex;                 // Values read from sensor
 const String application = "weather";  // Name of the application, used in the log MQTT payloads and topics
 const int data_pin = 5;                // GPIO pin for the DHT data
 unsigned long previousMillis = 0;      // Will store last temp was read
-const long interval = 2000;            // Interval at which to read sensor
+const long interval = 5000;            // Interval at which to read sensor
 
 // WiFi setup
 const String ssid = "ESP_" + application;
@@ -25,8 +29,8 @@ const char* password = "";
 const char* client_mac;
 
 // MQTT setup
-const char* mqtt_server = "<BROKER_IP>";
-const int mqtt_port = <BROKER_PORT>;
+const char* mqtt_server = "<IP>";
+const int mqtt_port = 1883;
 const char* mqtt_username = "esp";                  // Used while connecting to the broker
 const char* mqtt_password = "";                     // Leave empty if not needed
 const String mqtt_topic_syntax = "home/";           // The first part of the MQTT topic, the second part is generated with the application name
@@ -75,7 +79,11 @@ void loop() {
   if (currentMillis - previousMillis >= interval) {
     // save the last time you read the sensor
     previousMillis = currentMillis;
-    
+
+    vcc = ESP.getVcc(); //readvdd33();
+    Serial.print("Vcc: ");
+    Serial.println(vcc);
+
     t = dht.readTemperature();
     h = dht.readHumidity();
     if (isnan(t) || isnan(h)) {
@@ -99,7 +107,11 @@ void loop() {
       connect_MQTT();
     }
     send_MQTT(t, h, heatIndex);
+    send_MQTT_log(vcc);
     client.loop();
   }
+  /*
+    Serial.println("Entering sleep mode...");
+    ESP.deepSleep(SLEEP_DELAY_IN_SECONDS * 1000000);*/
 }
 
